@@ -3,6 +3,7 @@ import PyPDF2
 from bs4 import BeautifulSoup
 from flask import Flask, request, render_template
 import openai
+from io import StringIO
 
 app = Flask(__name__)
 
@@ -23,21 +24,25 @@ def chat_gpt():
         return render_template('index.html', answer=answer)
     return render_template('index.html', answer=None)
 
-def extract_text_from_file(document_file):
-    file_extension = os.path.splitext(document_file.filename)[1].lower()
+def extract_text_from_file(file):
+    file_ext = os.path.splitext(file.filename)[-1].lower()
     text = ""
-
-    if file_extension == '.txt':
-        text = document_file.read().decode('utf-8')
-    elif file_extension == '.pdf':
-        with PyPDF2.PdfFileReader(document_file) as pdf_reader:
-            for page_num in range(pdf_reader.numPages):
-                text += pdf_reader.getPage(page_num).extractText()
-    elif file_extension == '.html':
-        soup = BeautifulSoup(document_file.read(), 'html.parser')
+    
+    if file_ext == '.txt':
+        text = file.read().decode('utf-8')
+    elif file_ext == '.pdf':
+        pdf_reader = PyPDF2.PdfReader(file)
+        pdf_text = StringIO()
+        for page_num in range(len(pdf_reader.pages)):
+            pdf_text.write(pdf_reader.pages[page_num].extract_text())
+        text = pdf_text.getvalue()
+    elif file_ext == '.html':
+        html_content = file.read().decode('utf-8')
+        soup = BeautifulSoup(html_content, 'html.parser')
         text = soup.get_text()
-
+    
     return text
+
 
 def get_answer_from_gpt(document, query):
     prompt = f"{document}\n\nQuestion: {query}\nAnswer:"
