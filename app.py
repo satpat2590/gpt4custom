@@ -6,6 +6,13 @@ import openai
 
 app = Flask(__name__)
 
+# Retrieve the API key
+openai.api_key = os.environ.get('OPENAI_API_KEY')
+
+# # Set the model and other parameters
+model = "gpt-4"  # Replace with the appropriate model version
+max_tokens = 100
+
 @app.route('/', methods=['GET', 'POST'])
 def chat_gpt():
     if request.method == 'POST':
@@ -33,9 +40,15 @@ def extract_text_from_file(document_file):
     return text
 
 def get_answer_from_gpt(document, query):
-    # Replace this with the actual API call to GPT-4
-    # and return the answer based on the document and query.
-    return "This is a sample answer."
+    prompt = f"{document}\n\nQuestion: {query}\nAnswer:"
+
+    response = openai.Completion.create(
+        engine=model,
+        prompt=prompt,
+        max_tokens=max_tokens,
+    )
+    generated_text = response.choices[0].text.strip()
+    return generated_text
 
 if __name__ == '__main__':
     app.run(debug=True)
