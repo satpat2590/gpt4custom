@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ChatGPT API</title>
+</head>
+<body>
+    <h1>Ask ChatGPT</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <label for="document">Document:</label>
+        <input type="file" name="document" id="document" accept=".txt,.pdf,.html"><br>
+        <label for="query">Query:</label>
+        <input type="text" name="query" id="query"><br>
+        <input type="submit" value="Submit">
+    </form>
+    {% if answer %}
+    <h2>Answer: {{ answer }}</h2>
+    {% endif %}
+</body>
+</html>
+
