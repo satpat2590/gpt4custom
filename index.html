@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,5 +17,103 @@
     <h2>Answer: {{ answer }}</h2>
     {% endif %}
 </body>
-</html>
+</html> -->
+
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <style>
+    body {
+      background-color: rgba(144, 238, 144, 0.5);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    
+    .chat-container {
+      max-width: 768px;
+      margin: 30px auto;
+      border-radius: 5px;
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .chat-bubble {
+      border-radius: 18px;
+      padding: 12px 18px;
+      margin-bottom: 8px;
+      max-width: 80%;
+      display: inline-block;
+      position: relative;
+    }
+    
+    .chat-bubble::before {
+      content: '';
+      display: inline-block;
+      position: absolute;
+      border: 10px solid transparent;
+    }
+    
+    .user {
+      background-color: #0b93f6;
+      color: white;
+      float: right;
+      clear: both;
+    }
+    
+    .user::before {
+      border-right-color: #0b93f6;
+      border-left: none;
+      top: 0;
+      right: -20px;
+    }
+    
+    .gpt {
+      background-color: #e5e5ea;
+      color: black;
+      float: left;
+      clear: both;
+    }
+    
+    .gpt::before {
+      border-left-color: #e5e5ea;
+      border-right: none;
+      top: 0;
+      left: -20px;
+    }
+  </style>
+
+  <title>Chat with GPT-3.5 Turbo</title>
+</head>
+<body>
+  <div class="chat-container">
+    <h1 class="text-center mb-4">Chat with GPT-3.5 Turbo</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="document" class="form-label">Document</label>
+        <input type="file" class="form-control" id="document" name="document" required>
+      </div>
+      <div class="mb-3">
+        <label for="query" class="form-label">Your question</label>
+        <input type="text" class="form-control" id="query" name="query" placeholder="Enter your question" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Ask GPT-3.5 Turbo</button>
+    </form>
+
+    {% if user_query %}
+      <div class="mt-4">
+        <div class="chat-bubble user">{{ user_query }}</div>
+        <div style="clear: both;"></div>
+      </div>
+      <div class="mt-2">
+        <div class="chat-bubble gpt">{{ gpt_answer }}</div>
+        <div style="clear: both;"></div>
+      </div>
+    {% endif %}
 
